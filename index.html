@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎀My To-Do List🎀</h1>
+        <div class="input-group">
+            <input type="text" placeholder="Add a new task..." class="taskInput">
+            <button class="add-task-btn">Add</button>
+        </div>
+        <div id="tasklist">
+            <button class="delete-list-btn">Empty List</button>
+            <ul class="task-items"></ul>
+        </div>
+    </div>
+
+    <script>
+        const taskInput = document.querySelector('.taskInput');
+        const addTaskBtn = document.querySelector('.add-task-btn');
+        const taskItems = document.querySelector('.task-items');
+        const deleteListBtn = document.querySelector('.delete-list-btn');
+
+        addTaskBtn.addEventListener('click', () => {
+            const taskText = taskInput.value;
+            if (taskText.trim() != '') {
+                const li = document.createElement('li');
+                li.textContent = taskText;
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.classList.add('task-checkbox');
+                li.prepend(checkbox);
+                taskItems.appendChild(li);
+                const btn = document.createElement('button');
+                btn.textContent = '🗑️';
+                btn.classList.add('delete-task-btn');
+                li.appendChild(btn);
+                taskInput.value = '';
+            }
+        });
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTaskBtn.click();
+            }
+        });
+
+        deleteListBtn.addEventListener('click', () => {
+            taskItems.innerHTML = '';
+        });
+
+        taskItems.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-task-btn')) {
+                const li = e.target.parentElement;
+                taskItems.removeChild(li);
+            }
+        });
+
+        taskItems.addEventListener('change', (e) => {
+            if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+                const li = e.target.parentElement;
+                if (e.target.checked) {
+                    li.style.textDecoration = 'line-through';
+                } else {
+                    li.style.textDecoration = 'none';
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
